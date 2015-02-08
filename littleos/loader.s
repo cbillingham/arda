@@ -6,8 +6,6 @@ global loader                   ; the entry symbol for ELF
                                     ; (magic number + checksum + flags should equal 0)
     KERNEL_STACK_SIZE equ 4096      ; size of stack in bytes
 
-    NUM equ 8
-
 
     section .bss
     align 4                                     ; align at 4 bytes
@@ -15,7 +13,7 @@ global loader                   ; the entry symbol for ELF
         resb KERNEL_STACK_SIZE                  ; reserve stack for the kernel
 
 
-    section .text:                  ; start of the text (code) section
+    section .boot:                  ; start of the boot section
     align 4                         ; the code must be 4 byte aligned
         dd MAGIC_NUMBER             ; write the magic number to the machine code,
         dd FLAGS                    ; the flags,
@@ -23,14 +21,11 @@ global loader                   ; the entry symbol for ELF
 
     loader:                         ; the loader label (defined as entry point in linker script)
 
-        extern sum_of_three
+        extern  kmain
 
         mov     esp, kernel_stack + KERNEL_STACK_SIZE   ; point esp to the start of the stack (end of memory area)
 
-        push    NUM                 ; arg3
-        push    NUM                 ; arg2
-        push    NUM                 ; arg1
-        call    sum_of_three        ; call the function, the result will be in eax
+        call    kmain       ; call main kernel code
 
 
     .loop:
