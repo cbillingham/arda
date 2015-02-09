@@ -1,15 +1,15 @@
     #include "fb.h"
+    #include "sp.h"
 
 
 	int kmain() {
 
-	    #define FB_GREEN     2
-    	#define FB_DARK_GREY 8
+        fb_clear();
+        fb_move_cursor_to(0,0);
+        fb_write("Welcome to ARDA\n");
 
-    	fb_write_cell(0, 'A', FB_GREEN, FB_DARK_GREY);
-
-    	fb_move_cursor(800);
-
+        serial_configure(COM1);
+        serial_write(COM1, "It's working... it's working!");
 
 
 		return 0;

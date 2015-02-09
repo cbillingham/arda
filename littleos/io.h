@@ -7,6 +7,8 @@
      *  @param port The I/O port to send the data to
      *  @param data The data to send to the I/O port
      */
-    void outb(unsigned short port, unsigned char data);
+    void outb(unsigned short port, char data);
+
+    int inb(unsigned short port);
 
     #endif /* IO_H */
