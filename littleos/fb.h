@@ -1,27 +1,33 @@
     #ifndef FB_H
     #define FB_H
 
-    #define FB_BLACK         0x00
-    #define FB_BLUE          1
-    #define FB_GREEN         2
-    #define FB_CYAN          3
-    #define FB_RED           4
-    #define FB_MAGENTA       5
-    #define FB_BROWN         6
-    #define FB_LIGHT_GREY    7
-    #define FB_DARK_GREY     8
-    #define FB_LGHT_BLUE     9
-    #define FB_LIGHT_GREEN   10
-    #define FB_LIGHT_CYAN    11
-    #define FB_LIGHT_RED     12
-    #define FB_LIGHT_MAGENTA 13
-    #define FB_LIGHT_BROWN   14
-    #define FB_WHITE         0x0F
 
-    void fb_move_cursor_to(unsigned int row, unsigned int col);
+    #define FB_BLACK 0
+    #define FB_BLUE 1
+    #define FB_GREEN 2
+    #define FB_CYAN 3
+    #define FB_RED 4
+    #define FB_MAGENTA 5
+    #define FB_BROWN 6
+    #define FB_WHITE 7
+    #define FB_DARKGRAY 8
+    #define FB_BRIGHTBLUE 9
+    #define FB_BRIGHTGREEN 10
+    #define FB_BRIGHTCYAN 11
+    #define FB_PINK 12
+    #define FB_BRIGHTMAGENTA 13
+    #define FB_YELLOW 14
+    #define FB_BRIGHTWHITE 15
+    #define FB_COMMAND_PORT 0x3D4
+    #define FB_DATA_PORT 0x3D5
 
-    int fb_write();
+    void fb_init();
+    void fb_move_cursor(unsigned char row, unsigned char col);
+    void fb_write_cell(unsigned char row, unsigned char col, char c,
+                       unsigned char fg_color, unsigned char bg_color);
 
-    void fb_clear();
+    void clear_screen();
+    void fb_write_text(const char *buffer, const int length);
+
 
     #endif /* FB */

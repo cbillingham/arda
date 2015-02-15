@@ -120,7 +120,7 @@
     }
     */
 
-        void serial_configure(unsigned short com)
+    void serial_configure(unsigned short com)
     {
         serial_configure_baud_rate(com, BAUD_RATE);
         serial_configure_line(com);
