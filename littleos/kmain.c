@@ -1,8 +1,13 @@
     #include "fb.h"
     #include "sp.h"
+    #include "io.h"
+    #include "gtd.h"
 
 
 	int kmain() {
+
+        gdt_install();
+
 
         fb_init();
         clear_screen();
