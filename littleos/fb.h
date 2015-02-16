@@ -27,7 +27,7 @@
                        unsigned char fg_color, unsigned char bg_color);
 
     void clear_screen();
-    void fb_write_text(const char *buffer, const int length);
+    void fb_write_text(char *buffer);
 
 
     #endif /* FB */

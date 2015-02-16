@@ -5,7 +5,8 @@
 	int kmain() {
 
         fb_init();
-        fb_writez_text("Welcome to ARDA\n");
+        clear_screen();
+        fb_write_text("Welcome to ARDA!\nBooting...\n");
 
         serial_configure(COM1);
         serial_write(COM1, "It's working... it's working!");

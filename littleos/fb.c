@@ -1,12 +1,8 @@
     /* FrameBuffer Driver */
 
-
     #include "io.h"
     #include "fb.h"
-
-
-    #include "io.h"
-    #include "fb.h"
+    #include "string.h"
 
     // This is the frame buffer base address.
     #define FB_BASE_ADDR 0x000B8000
@@ -27,6 +23,8 @@
     #define FB_COMMAND_PORT 0x3D4
     #define FB_DATA_PORT 0x3D5
 
+    #define TAB_SPACE 4
+
 
     // A struct to keep track of the state of our frame buffer.
     struct {
@@ -46,7 +44,7 @@
     }
 
     void fb_move_cursor(unsigned char row, unsigned char col) {
-      unsigned short pos = (row * FB_WIDTH) + col;
+      unsigned char pos = (row * FB_WIDTH) + col;
       outb(FB_COMMAND_PORT, FB_CMD_CURSOR_LOW_BYTE);
       outb(FB_DATA_PORT, pos & 0x00ff);
       outb(FB_COMMAND_PORT, FB_CMD_CURSOR_HIGH_BYTE);
@@ -63,12 +61,11 @@
     }
 
     void clear_screen() {
-      int i;
-      for (i = 0; i < (FB_WIDTH * FB_HEIGHT); ++i) {
-        FB_SHORT_PTR[i] = 0;
+      for (int i= 0; i < FB_HEIGHT; i++) {
+        for (int j = 0; j < FB_WIDTH; j++) {
+            fb_write_cell(i, j, ' ', fb_state.fg_color, fb_state.bg_color);
+        }
       }
-      fb_state.fg_color = FB_WHITE;
-      fb_state.bg_color = FB_BLACK;
       fb_move_cursor(0, 0);
     }
 
@@ -85,21 +82,30 @@
       }
     }
 
-    void fb_write_text(const char *buffer, const int length) {
-      int i;
-      for (i = 0; i < length; ++i) {
-        fb_write_cell(fb_state.row, fb_state.col, buffer[i],
-                      fb_state.fg_color, fb_state.bg_color);
-        ++fb_state.col;
+    void fb_write_text(char *buffer) {
+      for (int i = 0; i < strlen(buffer); i++) {
+        if (buffer[i] != '\n' && buffer[i] != '\t') {
+            fb_write_cell(fb_state.row, fb_state.col, buffer[i],
+                          fb_state.fg_color, fb_state.bg_color);
+            fb_state.col++;
+        }
+        if (buffer[i] == '\n') {
+            fb_state.col = 0;
+            fb_state.row++;
+        }
+        if (buffer[i] == '\t') {
+            fb_state.col = fb_state.col + TAB_SPACE;
+        }
         if (fb_state.col >= FB_WIDTH) {
           fb_state.col = 0;
-          ++fb_state.row;
+          fb_state.row++;
         }
         if (fb_state.row >= FB_HEIGHT) {
           if (fb_state.scroll_mode) {
             scroll_framebuffer();
             fb_state.row = FB_HEIGHT-1;
           } else {
+            clear_screen();
             fb_state.row = 0;
           }
         }

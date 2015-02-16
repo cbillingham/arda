@@ -1,6 +1,7 @@
 	/* Serial Port Driver */
 
 	#include "io.h"
+    #include "string.h"
 
 
     /* The I/O ports */
@@ -106,10 +107,8 @@
 
     void serial_write(unsigned short com, char *data)
     {
-        int i = 0;
-        while (data[i] != '\0') {
+        for (int i = 0; i < strlen(data); i++) {
             serial_write_char(com, data[i]);
-            i++;
         }
     }
 
