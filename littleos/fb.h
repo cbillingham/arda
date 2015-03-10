@@ -18,8 +18,6 @@
     #define FB_BRIGHTMAGENTA 13
     #define FB_YELLOW 14
     #define FB_BRIGHTWHITE 15
-    #define FB_COMMAND_PORT 0x3D4
-    #define FB_DATA_PORT 0x3D5
 
     void fb_init();
     void fb_move_cursor(unsigned char row, unsigned char col);
@@ -28,6 +26,7 @@
 
     void clear_screen();
     void fb_write_text(char *buffer);
+    void fb_write_dec(unsigned int n);
 
 
     #endif /* FB */

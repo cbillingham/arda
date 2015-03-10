@@ -44,11 +44,11 @@
     }
 
     void fb_move_cursor(unsigned char row, unsigned char col) {
-      unsigned char pos = (row * FB_WIDTH) + col;
-      outb(FB_COMMAND_PORT, FB_CMD_CURSOR_LOW_BYTE);
-      outb(FB_DATA_PORT, pos & 0x00ff);
+      unsigned short pos = (row * FB_WIDTH) + col;
       outb(FB_COMMAND_PORT, FB_CMD_CURSOR_HIGH_BYTE);
-      outb(FB_DATA_PORT, ((pos >> 8) & 0x00ff));
+      outb(FB_DATA_PORT, ((pos >> 8) & 0x00FF));
+      outb(FB_COMMAND_PORT, FB_CMD_CURSOR_LOW_BYTE);
+      outb(FB_DATA_PORT, pos & 0x00FF);
     }
 
     void fb_write_cell(unsigned char row, unsigned char col, char c,
@@ -77,8 +77,9 @@
         fb[i] = symbol;
       }
       // Blank the bottom line
-      for (i = (FB_WIDTH * (FB_HEIGHT-1)); i < FB_WIDTH*FB_HEIGHT; ++i) {
-        fb[i] = 0;
+      i = 24;
+      for (int j = 0; j < FB_WIDTH; j++) {
+            fb_write_cell(i, j, ' ', fb_state.fg_color, fb_state.bg_color);
       }
     }
 
@@ -112,4 +113,36 @@
       }
       // Once we're all done writing the string pop the cursor to its new position.
       fb_move_cursor(fb_state.row, fb_state.col);
+    }
+
+    void fb_write_dec(unsigned int n)
+    {
+
+        if (n == 0)
+        {
+            fb_write_cell(fb_state.row, fb_state.col, '0',
+                            fb_state.fg_color, fb_state.bg_color);
+            return;
+        }
+
+        unsigned int dec = n;
+        char c[32];
+        int i = 0;
+        while (dec > 0)
+        {
+            c[i] = '0' + dec%10;
+            dec /= 10;
+            i++;
+        }
+        c[i] = '\0';
+
+        char c2[32];
+        c2[i--] = 0;
+        int j = 0;
+        while(i >= 0)
+        {
+            c2[i--] = c[j++];
+        }
+        fb_write_text(c2);
+
     }

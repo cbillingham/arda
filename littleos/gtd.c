@@ -44,7 +44,7 @@
         gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 
         /* Flush out the old GDT and install the new changes! */
-        lgdt(&gp);
+        lgdt((unsigned int) &gp);
         loadSegments();
     }
 

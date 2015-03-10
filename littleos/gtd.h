@@ -20,7 +20,7 @@
 
 
     //Described in loader.s
-    void lgdt(struct gdt_ptr *gdt_t);
+    void lgdt(unsigned int gdt);
 
     //Described in loader.s
     void loadSegments();
