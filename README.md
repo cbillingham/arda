@@ -1,2 +1,2 @@
-# cmsi387
-An operating system developed for CMSI 387 at Loyola Marymount University
+# Arda
+A simple operating system developed from scratch.
