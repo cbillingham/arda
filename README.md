@@ -36,7 +36,7 @@ Once running Ubuntu, we need to install Bochs. Bochs is an emulator for the x86 
 
 Open terminal and run
 
-```
+```bash
 sudo apt-get install build-essential nasm genisoimage bochs bochs-sdl
 ```
 
@@ -46,7 +46,7 @@ Once you've install these essential tools and Bochs, you can clone this reposito
 Arda uses a Makefile to simplify the building and compiling of assembly and C files. You can examine the Makefile for more details on the build process.  
 To run Arda, simply cd into the source directory in this repository and run
 
-```
+```bash
 make run
 ```
 
